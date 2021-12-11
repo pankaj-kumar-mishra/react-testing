@@ -5,6 +5,11 @@ const apiClient = {
       .then((response) => response.json())
       .catch((err) => console.log("getHomes", err));
   },
+  bookHome: (item, checkIn, checkOut) => {
+    return fetch("https://run.mocky.io/v3/d28be3f7-ffcc-4b7b-88b1-212a03d6a7fa")
+      .then((response) => response.json())
+      .catch((err) => console.log("bookHome", err));
+  },
 };
 
 export default apiClient;

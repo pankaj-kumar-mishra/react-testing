@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Dialog, DialogContent } from "@material-ui/core";
 import apiClient from "../services/apiClient";
+import bookingDialog from "../services/bookingDialog";
+import HomeBooking from "./HomeBooking";
 
 const Homes = () => {
   const [homesData, setHomesData] = useState([]);
+  const [dialogData, setDialogData] = useState({ open: false, item: null });
 
   useEffect(() => {
     const homesDataPromise = apiClient.getHomes();
@@ -12,8 +16,23 @@ const Homes = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const dialogSubscription = bookingDialog.dialogEvt$.subscribe((state) =>
+      setDialogData(state)
+    );
+
+    return () => dialogSubscription.unsubscribe();
+  }, []);
+
   return (
     <div className="container-fluid m-2">
+      {/* MODAL CONTENT */}
+      <Dialog open={dialogData.open} onClose={() => bookingDialog.close()}>
+        <DialogContent>
+          <HomeBooking item={dialogData.item} />
+        </DialogContent>
+      </Dialog>
+      {/* PAGE CONTENT */}
       <h1>Homes</h1>
       <div className="row">
         {homesData.map((item, index) => (
@@ -31,6 +50,16 @@ const Homes = () => {
                 </div>
                 <div data-testid="home-location">{item.location}</div>
                 <div data-testid="home-price">${item.price}/night</div>
+                <div className="d-flex justify-content-end">
+                  <button
+                    data-testid="home-booking-btn"
+                    type="button"
+                    onClick={() => bookingDialog.open(item)}
+                    className="btn btn-primary"
+                  >
+                    Book
+                  </button>
+                </div>
               </div>
             </div>
           </div>
