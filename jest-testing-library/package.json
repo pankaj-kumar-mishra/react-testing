@@ -1,0 +1,14 @@
+{
+  "name": "jest-testing-library",
+  "version": "1.0.0",
+  "description": "Basics of jest and testing library",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest first.test.js"
+  },
+  "author": "Pankaj",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.4.4"
+  }
+}
