@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import App from "./App";
+import App, { replaceCamelWithSpaces } from "./App";
 
 test("page has a title", () => {
   render(<App />);
@@ -10,22 +10,26 @@ test("page has a title", () => {
 test("button has correct initial color", () => {
   render(<App />);
   // checking button with specified name
-  const colorBtn = screen.getByRole("button", { name: /Change to blue/i });
+  const colorBtn = screen.getByRole("button", {
+    name: /Change to Midnight Blue/i,
+  });
   // checking button have style
-  expect(colorBtn).toHaveStyle({ backgroundColor: "red" });
+  expect(colorBtn).toHaveStyle({ backgroundColor: "MediumVioletRed" });
 
   // Onclick of button, change background color to blue, button name blue to red
   fireEvent.click(colorBtn);
-  expect(colorBtn).toHaveStyle({ backgroundColor: "blue" });
+  expect(colorBtn).toHaveStyle({ backgroundColor: "MidnightBlue" });
   // expect(colorBtn.textContent).toBe("Change To red");
-  expect(colorBtn).toHaveTextContent(/Change to red/i);
+  expect(colorBtn).toHaveTextContent(/Change to Medium Violet Red/i);
 });
 
 // Check box functionality
 test("Initial condition of check box and color button", () => {
   render(<App />);
   // Check that button starts out enabled
-  const colorBtn = screen.getByRole("button", { name: /Change to blue/i });
+  const colorBtn = screen.getByRole("button", {
+    name: /Change to Midnight Blue/i,
+  });
   expect(colorBtn).toBeEnabled();
 
   // Check that checkbox starts out unchecked
@@ -38,7 +42,9 @@ test("Initial condition of check box and color button", () => {
 
 test("On checkbox click, make button disable/enable respectively", () => {
   render(<App />);
-  const colorBtn = screen.getByRole("button", { name: /Change to blue/i });
+  const colorBtn = screen.getByRole("button", {
+    name: /Change to Midnight Blue/i,
+  });
   // const checkBox = screen.getByTestId("toggle-check");
   const checkBox = screen.getByRole("checkbox", {
     name: /Disable color button/i,
@@ -52,7 +58,9 @@ test("On checkbox click, make button disable/enable respectively", () => {
 
 test("disabled button color grey and on enabled it revert to red", () => {
   render(<App />);
-  const colorBtn = screen.getByRole("button", { name: /Change to blue/i });
+  const colorBtn = screen.getByRole("button", {
+    name: /Change to Midnight Blue/i,
+  });
   const checkBox = screen.getByRole("checkbox", {
     name: /Disable color button/i,
   });
@@ -60,12 +68,14 @@ test("disabled button color grey and on enabled it revert to red", () => {
   fireEvent.click(checkBox);
   expect(colorBtn).toHaveStyle({ backgroundColor: "grey" });
   fireEvent.click(checkBox);
-  expect(colorBtn).toHaveStyle({ backgroundColor: "red" });
+  expect(colorBtn).toHaveStyle({ backgroundColor: "MediumVioletRed" });
 });
 
 test("Clicked button color blue, checkbox clicked color grey and on enabled it revert to blue", () => {
   render(<App />);
-  const colorBtn = screen.getByRole("button", { name: /Change to blue/i });
+  const colorBtn = screen.getByRole("button", {
+    name: /Change to Midnight Blue/i,
+  });
   const checkBox = screen.getByRole("checkbox", {
     name: /Disable color button/i,
   });
@@ -74,5 +84,20 @@ test("Clicked button color blue, checkbox clicked color grey and on enabled it r
   fireEvent.click(checkBox);
   expect(colorBtn).toHaveStyle({ backgroundColor: "grey" });
   fireEvent.click(checkBox);
-  expect(colorBtn).toHaveStyle({ backgroundColor: "blue" });
+  expect(colorBtn).toHaveStyle({ backgroundColor: "MidnightBlue" });
+});
+
+// Unit Testing
+describe("Spaces before camel-case capital letters", () => {
+  test("should works for no inner capital letters", () => {
+    expect(replaceCamelWithSpaces("Red")).toBe("Red");
+  });
+  test("should works for one inner capital letter", () => {
+    expect(replaceCamelWithSpaces("MidnightBlue")).toBe("Midnight Blue");
+  });
+  test("should work for multiple inner capital letter", () => {
+    expect(replaceCamelWithSpaces("MidnightVioletRed")).toBe(
+      "Midnight Violet Red"
+    );
+  });
 });

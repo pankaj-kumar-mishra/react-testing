@@ -1,9 +1,14 @@
 import { useState } from "react";
 
+export const replaceCamelWithSpaces = (colorName) => {
+  return colorName.replace(/\B([A-Z])\B/g, " $1");
+};
+
 function App() {
-  const [btnColor, setBtnColor] = useState("red");
+  const [btnColor, setBtnColor] = useState("MediumVioletRed");
   const [disabled, setDisabled] = useState(false);
-  const newBtnColor = btnColor === "red" ? "blue" : "red";
+  const newBtnColor =
+    btnColor === "MediumVioletRed" ? "MidnightBlue" : "MediumVioletRed";
 
   return (
     <div className="app-container">
@@ -15,7 +20,7 @@ function App() {
           onClick={() => setBtnColor(newBtnColor)}
           style={{ backgroundColor: disabled ? "grey" : btnColor }}
         >
-          Change To {newBtnColor}
+          Change To {replaceCamelWithSpaces(newBtnColor)}
         </button>
         <br />
         <br />
